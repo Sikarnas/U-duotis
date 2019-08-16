@@ -1,11 +1,11 @@
-Open app.js run npm install
+- Open app.js run npm install
 
-In order to calculate fees run:
+- In order to calculate fees run:
 
 npm start
 
-In order to start unit tests run:
+- In order to start unit tests run:
 
 npm test
 
-In order to change input data adjust the input.json file in the same directory
+- In order to change input data adjust the input.json file in the same directory
