@@ -1,3 +1,5 @@
+Open app.js run npm install
+
 In order to calculate fees run:
 
 npm start
