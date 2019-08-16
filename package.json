@@ -1,0 +1,16 @@
+{
+  "name": "uzduotis",
+  "version": "1.0.0",
+  "description": "",
+  "main": "mokesciai.js",
+  "scripts": {
+    "test": "jest",
+    "start": "node app.js input.json"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "jest": "^24.8.0",
+    "moment": "^2.24.0"
+  }
+}
