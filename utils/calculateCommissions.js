@@ -1,6 +1,6 @@
 const moment = require("moment");
 
-// function gets weeks number
+// function gets weeks number with provided date
 
 const getWeek = date => moment(date, "YYYY-MM-DD").isoWeek();
 
@@ -10,11 +10,8 @@ const roundNumbers = fee => {
   return Math.ceil(fee * 100) / 100;
 };
 
-// destructures 3rd argument's object or use default declared values
-
-const calculateCommissions = (
+const calculateCommissions = async (
   operations,
-  callback,
   {
     weeklyLimit,
     cashInCommission,
@@ -22,27 +19,23 @@ const calculateCommissions = (
     legalCommissions,
     maxCashInFee,
     minLegalCashOutFee
-  } = {
-    weeklyLimit: 1000,
-    cashInCommission: 0.0003,
-    naturalCommissions: 0.003,
-    legalCommissions: 0.003,
-    maxCashInFee: 5,
-    minLegalCashOutFee: 0.5
-  }
+  },
+  callback
 ) => {
-  // check for each type of payment and call PrintFee function with according fee
-
   operations.forEach(element => {
-    // check if the type of operation is cash_in and print the fee depending on the fee amount
+
+    // check if the type of operation is cash_in and calls calback function with correct fee
 
     if (element.type === "cash_in") {
       const fee = element.operation.amount * cashInCommission;
       fee <= maxCashInFee
         ? callback(roundNumbers(fee))
         : callback(roundNumbers(maxCashInFee));
-      // check if the type of operation cash_out and user type is juridical and print the fee accordingly
-    } else if (
+    } 
+
+    // check if the type of operation cash_out and user type is juridical and calls calback function with correct fee
+    
+    if (
       element.type === "cash_out" &&
       element.user_type === "juridical"
     ) {
@@ -50,28 +43,28 @@ const calculateCommissions = (
       fee >= minLegalCashOutFee
         ? callback(roundNumbers(fee))
         : callback(roundNumbers(minLegalCashOutFee));
-    } else if (element.type === "cash_out" && element.user_type === "natural") {
-      // check if the type is cash_out and the user_type is natural
+    }
 
-      const result = operations.filter(operation => {
-        //  filter out passed in operations to return operations which are made by the same user and created the same week
+    // check if the type of operation cash_out and user type is natural and call calback function with correct fee
+    
+    if (element.type === "cash_out" && element.user_type === "natural") {
 
-        if (
+    //  filter out passed in operations to return operations which are made by the same user and created in the same week
+
+      const filteredOperations = operations.filter(
+        operation =>
           operation.type === "cash_out" &&
           operation.user_type === "natural" &&
           operation.user_id === element.user_id &&
           getWeek(operation.date) === getWeek(element.date) &&
           operation.date <= element.date
-        ) {
-          return true;
-        } else return false;
-      });
-
-      let sum = 0;
+      );
 
       // calculate the sum of the operations that happened on the same week
 
-      result.forEach(operation => {
+      let sum = 0;
+
+      filteredOperations.forEach(operation => {
         sum = sum + operation.operation.amount;
       });
 

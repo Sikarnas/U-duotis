@@ -5,12 +5,13 @@
   "main": "mokesciai.js",
   "scripts": {
     "test": "jest",
-    "start": "node app.js input.json"
+    "start": "node app.js ./data/input.json"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "jest": "^24.8.0",
-    "moment": "^2.24.0"
+    "moment": "^2.24.0",
+    "node-fetch": "^2.6.0"
   }
 }
