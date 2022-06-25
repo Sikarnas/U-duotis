@@ -12,6 +12,6 @@
   "dependencies": {
     "jest": "^24.8.0",
     "moment": "^2.24.0",
-    "node-fetch": "^2.6.0"
+    "node-fetch": "^2.6.7"
   }
 }
